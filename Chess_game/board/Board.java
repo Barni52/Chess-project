@@ -1,3 +1,4 @@
+package board;
 import java.net.Socket;
 
 import Pieces.Bishop;
@@ -9,15 +10,16 @@ import Pieces.Queen;
 import Pieces.Rook;
 import Pieces.noPiece;
 
+
 public class Board {
     // DEFS
     final private boolean BLACK = false;
     final private boolean WHITE = true;
-
     //
-    private Piece[][] chessBoard;
-    private int blackValue = 0;
-    private int whiteValue = 0;
+
+    public Piece[][] chessBoard;
+    private int blackValue = 39;
+    private int whiteValue = 39;
 
     public Board(Piece[][] chessBoard) {
         this.chessBoard = chessBoard;

@@ -1,20 +1,22 @@
 package board;
-import java.net.Socket;
 
-import Pieces.Bishop;
-import Pieces.King;
-import Pieces.Knight;
-import Pieces.Pawn;
-import Pieces.Piece;
-import Pieces.Queen;
-import Pieces.Rook;
-import Pieces.noPiece;
+import java.util.ArrayList;
+
+import move.Move;
+import pieces.Bishop;
+import pieces.King;
+import pieces.Knight;
+import pieces.Pawn;
+import pieces.Piece;
+import pieces.Queen;
+import pieces.Rook;
+import pieces.noPiece;
 
 
 public class Board {
     // DEFS
-    final private boolean BLACK = false;
-    final private boolean WHITE = true;
+    final static private boolean BLACK = false;
+    final static private boolean WHITE = true;
     //
 
     public Piece[][] chessBoard;
@@ -59,6 +61,10 @@ public class Board {
                 chessBoard[i][j] = new noPiece(false);
             }
         }
+
+        // TEST
+            chessBoard[6][0] = new noPiece(false);
+        // TEST
     }
 
     public void printBoard(){
@@ -68,5 +74,17 @@ public class Board {
             }
             System.out.println();
         }
+    }
+
+    public ArrayList<Move> getPossibleMoves(){
+        ArrayList<Move> possibleMoves = new ArrayList<>();
+        for(int i = 0; i < chessBoard.length; i++){
+            for(int y = 0; y < chessBoard[i].length; y++){
+                if(!(chessBoard[i][y] instanceof noPiece)){
+                    possibleMoves.addAll(chessBoard[i][y].move(this, i, y));
+                }
+            }
+        }
+        return possibleMoves;
     }
 }

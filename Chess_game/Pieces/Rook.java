@@ -18,7 +18,6 @@ public class Rook extends Piece{
         ArrayList<Move> possibleMoves = new ArrayList<>();
         Piece[][] chessBoard = board.chessBoard;
 
-        // Move up
         for (int i = x - 1; i >= 0; i--) {
             if (addMove(possibleMoves, chessBoard, x, y, i, y)) break;
         }
@@ -41,17 +40,5 @@ public class Rook extends Piece{
         return possibleMoves;
     }
 
-    private boolean addMove(ArrayList<Move> possibleMoves, Piece[][] chessBoard, int fromX, int fromY, int toX, int toY) {
-        Piece targetPiece = chessBoard[toX][toY];
-
-        if (targetPiece instanceof noPiece) {
-            possibleMoves.add(new Move(fromX, fromY, toX, toY, false));
-            return false;
-        } else if (targetPiece.color != this.color) {
-            possibleMoves.add(new Move(fromX, fromY, toX, toY, false));
-            return true;
-        } else {
-            return true;
-        }
-    }
+    
 }

@@ -18,4 +18,18 @@ public abstract class Piece {
 
     public abstract ArrayList<Move> move(Board board, int x, int y);
 
+    protected boolean addMove(ArrayList<Move> possibleMoves, Piece[][] chessBoard, int fromX, int fromY, int toX, int toY) {
+        Piece targetPiece = chessBoard[toX][toY];
+
+        if (targetPiece instanceof noPiece) {
+            possibleMoves.add(new Move(fromX, fromY, toX, toY, false));
+            return false;
+        } else if (targetPiece.color != this.color) {
+            possibleMoves.add(new Move(fromX, fromY, toX, toY, false));
+            return true;
+        } else {
+            return true;
+        }
+    }
+
 }

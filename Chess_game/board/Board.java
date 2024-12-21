@@ -63,7 +63,7 @@ public class Board {
         }
 
         // TEST
-            chessBoard[6][0] = new noPiece(false);
+            chessBoard[3][3] = new Bishop(WHITE);
         // TEST
     }
 

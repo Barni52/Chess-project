@@ -1,4 +1,5 @@
 import board.Board;
+import board.BoardTest;
 import move.Move;
 
 public class Main {
@@ -10,5 +11,6 @@ public class Main {
         System.out.println(m1);
 
         System.out.println(mainBoard.getPossibleMoves());
+        //System.out.println(BoardTest.getPossibleMoves(mainBoard));
     }
 }

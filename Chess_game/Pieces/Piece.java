@@ -7,6 +7,15 @@ import move.Move;
 
 public abstract class Piece {
     final protected boolean color;
+    protected boolean hasMoved = false;
+
+    public boolean hasMoved() {
+        return hasMoved;
+    }
+
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
+    }
 
     public Piece(boolean color) {
         this.color = color;
@@ -30,6 +39,10 @@ public abstract class Piece {
         } else {
             return true;
         }
+    }
+
+    protected boolean isValidMove(int x, int y) {
+        return x >= 0 && x < 8 && y >= 0 && y < 8;
     }
 
 }

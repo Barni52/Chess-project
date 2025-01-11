@@ -15,8 +15,8 @@ import pieces.noPiece;
 
 public class Board {
     // DEFS
-    final static private boolean BLACK = false;
-    final static private boolean WHITE = true;
+    final static public boolean BLACK = false;
+    final static public boolean WHITE = true;
     //
 
     public Piece[][] chessBoard;
@@ -63,7 +63,7 @@ public class Board {
         }
 
         // TEST
-            chessBoard[3][3] = new Bishop(WHITE);
+
         // TEST
     }
 

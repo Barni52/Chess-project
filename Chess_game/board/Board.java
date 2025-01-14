@@ -78,9 +78,9 @@ public class Board {
                 chessBoard[i][y] = noPiece.getNoPieceInstance();
             }
         }
-        chessBoard[4][4] = new King(WHITE);
+        chessBoard[5][4] = new King(WHITE);
         chessBoard[7][4] = new King(BLACK);
-        //chessBoard[6][0] = new Queen(WHITE);
+        chessBoard[6][0] = new Queen(WHITE);
 
     }
 
@@ -109,7 +109,7 @@ public class Board {
         }
     }
 
-    private boolean isThereKingOnBoard(boolean inputColor){
+    public boolean isThereKingOnBoard(boolean inputColor){
         for(int i = 0; i < chessBoard.length; i++){
             for(int y = 0; y < chessBoard[i].length; y++){
                 if(!(chessBoard[i][y] instanceof noPiece) && chessBoard[i][y].getColor() == inputColor && chessBoard[i][y] instanceof King){

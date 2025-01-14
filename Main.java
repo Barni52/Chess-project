@@ -10,10 +10,22 @@ public class Main {
         //mainBoard.play();
 
         mainBoard.printBoard();
-        mainBoard.getPossibleMoves(true);
-
+        //System.out.println(mainBoard.getSimpleRelativeValue());
         int maxDepth = 4;
-
-        //System.out.println(PositionEvaluater.searchBestMove(mainBoard, maxDepth));
+        //System.out.println(PositionEvaluater.searchMoves(mainBoard, maxDepth));
+        PositionEvaluater.printBestMove(mainBoard, maxDepth);
+        
     }
+
+    /*
+     * TODO
+     * 
+     * Currently the algo doesnt consider the length of the checkmate: m3 == m8! Need fix 
+     * Very slow (alpa-beta pruning?)
+     * Eval is really shit, needs lots of update!
+     * 
+     * 
+     * 
+     * 
+     */
 }

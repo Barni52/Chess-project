@@ -8,7 +8,45 @@ import move.Move;
 
 public class PositionEvaluater {
 
-    public static HashMap<Move, Double> searchBestMove(Board board, int maxDepth){
+    public static HashMap<Move, Double> getBestMove(Board board, int maxDepth){
+        HashMap<Move, Double> moveValues = searchMoves(board, maxDepth);
+        HashMap<Move, Double> bestMoveAndValue = new HashMap<>();
+        double bestCase = board.getColorToMove() ? -2002 : 2002;
+        Move bestMove = new Move(0, 0, 0, 0, false); // This is a place holder to make the jdk happy, if this case ever happens it's cooked. (It's printed as a8 to a8)
+        for(Move keyMove : moveValues.keySet()){
+            if(board.getColorToMove() == Board.WHITE){
+                if(moveValues.get(keyMove) > bestCase){
+                    bestCase = moveValues.get(keyMove);
+                    bestMove = keyMove;
+                }
+            } else{
+                if(moveValues.get(keyMove) < bestCase){
+                    bestCase = moveValues.get(keyMove);
+                    bestMove = keyMove;
+                }
+            }
+        }
+        bestMoveAndValue.put(bestMove, bestCase);
+        return bestMoveAndValue;
+    }
+
+    public static void printBestMove(Board board, int maxDepth){
+        HashMap<Move, Double> bestMoveToBePrinted = getBestMove(board, maxDepth);
+
+        for(Move keyMove : bestMoveToBePrinted.keySet()){
+            System.out.println("Top move: " + keyMove + " with an eval of: " + bestMoveToBePrinted.get(keyMove));
+        }
+
+    }
+
+    public static void printBestMove(HashMap<Move, Double> bestMoveToBePrinted){
+        for(Move keyMove : bestMoveToBePrinted.keySet()){
+            System.out.println("Top move: " + keyMove + " with an eval of: " + bestMoveToBePrinted.get(keyMove));
+        }
+
+    }
+
+    public static HashMap<Move, Double> searchMoves(Board board, int maxDepth){
         HashMap<Move, Double> moveValues = new HashMap<>();
         ArrayList<Move> tempList = board.getPossibleMoves(board.getColorToMove());
         boolean currentColorToMove = board.getColorToMove();
@@ -16,11 +54,12 @@ public class PositionEvaluater {
         for(Move m : tempList){
             moveValues.put(m, 0.0);
         }
+        //System.out.println(moveValues);
 
         for(Move moveKey : moveValues.keySet()){
-            Board boardCopy = board;
+            Board boardCopy = board.clone();
             boardCopy.executeMove(moveKey);
-            moveValues.put(moveKey, search(board, 0, maxDepth, currentColorToMove));
+            moveValues.put(moveKey, search(boardCopy, 0, maxDepth, currentColorToMove));
         }
 
 
@@ -29,12 +68,12 @@ public class PositionEvaluater {
 
     private static double search(Board board, int currentDepth, int maxDepth, boolean currentColorToMove){
         
-        if(currentDepth == maxDepth){
+        if(currentDepth == maxDepth || !board.isThereKingOnBoard(Board.WHITE) || !board.isThereKingOnBoard(Board.BLACK)){
             return board.getSimpleRelativeValue();
         }
 
         if(currentColorToMove){
-            double max = -1100;
+            double max = -2000;
 
             ArrayList<Move> tempList = board.getPossibleMoves(board.getColorToMove());
             for(Move m : tempList){
@@ -43,19 +82,18 @@ public class PositionEvaluater {
                 double thisMoveValue = search(tempBoard, currentDepth + 1, maxDepth, tempBoard.getColorToMove());
                 if(thisMoveValue > max) max = thisMoveValue;
             }
-        }
-        if(!currentColorToMove){
-            double min = 1100;
+            return max;
+        } else{
+            double min = 2000;
 
             ArrayList<Move> tempList = board.getPossibleMoves(board.getColorToMove());
             for(Move m : tempList){
                 Board tempBoard = board.clone();
                 tempBoard.executeMove(m);
                 double thisMoveValue = search(tempBoard, currentDepth + 1, maxDepth, tempBoard.getColorToMove());
-                if(thisMoveValue < min) min = thisMoveValue;
+                if(thisMoveValue <= min) min = thisMoveValue;
             }
+            return min;
         }
-
-        return 0;
     } 
 }

@@ -6,7 +6,9 @@ import board.Board;
 import move.Move;
 
 public class noPiece extends Piece{
-    public noPiece(boolean color) {
+    private static noPiece singleNoPiece = null;
+
+    private noPiece(boolean color) {
         super(color);
     }
 
@@ -20,4 +22,12 @@ public class noPiece extends Piece{
 
         return possibleMoves;
     };
+
+    public static noPiece getNoPieceInstance()
+    {
+        if (singleNoPiece == null)
+            singleNoPiece = new noPiece(false);
+ 
+        return singleNoPiece;
+    }
 }

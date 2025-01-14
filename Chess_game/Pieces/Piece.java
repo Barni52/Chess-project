@@ -7,6 +7,11 @@ import move.Move;
 
 public abstract class Piece {
     final protected boolean color;
+
+    public boolean getColor() {
+        return color;
+    }
+
     protected boolean hasMoved = false;
 
     public boolean hasMoved() {

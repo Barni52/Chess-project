@@ -1,6 +1,7 @@
 package board;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import move.Move;
 import pieces.Bishop;
@@ -20,8 +21,12 @@ public class Board {
     //
 
     public Piece[][] chessBoard;
+
+    private boolean colorToMove = WHITE; // Which color is next to move (at the start white)
+
     private int blackValue = 39;
     private int whiteValue = 39;
+    
 
     public Board(Piece[][] chessBoard) {
         this.chessBoard = chessBoard;
@@ -58,7 +63,7 @@ public class Board {
         // Remaining squares are null
         for (int i = 2; i < 6; i++) {
             for (int j = 0; j < 8; j++) {
-                chessBoard[i][j] = new noPiece(false);
+                chessBoard[i][j] = noPiece.getNoPieceInstance();
             }
         }
 
@@ -76,15 +81,73 @@ public class Board {
         }
     }
 
-    public ArrayList<Move> getPossibleMoves(){
+    private boolean isThereKingOnBoard(boolean inputColor){
+        for(int i = 0; i < chessBoard.length; i++){
+            for(int y = 0; y < chessBoard[i].length; y++){
+                if(!(chessBoard[i][y] instanceof noPiece) && chessBoard[i][y].getColor() == inputColor && chessBoard[i][y] instanceof King){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public ArrayList<Move> getPossibleMoves(boolean inputColor){
         ArrayList<Move> possibleMoves = new ArrayList<>();
         for(int i = 0; i < chessBoard.length; i++){
             for(int y = 0; y < chessBoard[i].length; y++){
-                if(!(chessBoard[i][y] instanceof noPiece)){
+                if(!(chessBoard[i][y] instanceof noPiece) && chessBoard[i][y].getColor() == inputColor){
                     possibleMoves.addAll(chessBoard[i][y].move(this, i, y));
                 }
             }
         }
         return possibleMoves;
+    }
+
+    public void executeMove(Move move){
+        chessBoard[move.getToX()][move.getToY()] = chessBoard[move.getFromX()][move.getFromY()]; // Moves the piece from the starting square to the arrival square, replacing (capturing) the piece there.
+        chessBoard[move.getFromX()][move.getFromY()] = noPiece.getNoPieceInstance();
+    }
+
+    public void play(){
+        System.out.println("heY");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Type the move to make it, or type 'forfeit' to give up.");
+        while(true){
+            this.printBoard();
+            System.out.println(this.getPossibleMoves(colorToMove));
+
+            if(!isThereKingOnBoard(colorToMove)){
+                System.out.println("Game over: " + (colorToMove ? "Black " : "White ") + "won!");
+                break;
+            }
+
+            System.out.println((colorToMove ? "White " : "Black ") + "to move");
+            String userStringMove = scanner.nextLine();
+            
+            if(userStringMove.equals("forfeit")){
+                System.out.println("Game over: " + (colorToMove ? "Black " : "White ") + "won!");
+                break;
+            }
+
+            boolean isValidMove = false;
+
+            for(Move move : this.getPossibleMoves(colorToMove)){
+                if(move.toString().equals(userStringMove)){
+                    isValidMove = true;
+                }
+            }
+            if(!isValidMove){
+                System.out.println("Invalid move, try again!");
+                continue;
+            }
+            Move userMove = Move.fromString(userStringMove);
+
+            this.executeMove(userMove);
+
+            colorToMove = !colorToMove;
+
+        }
+        scanner.close();
     }
 }

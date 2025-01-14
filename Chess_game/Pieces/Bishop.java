@@ -22,18 +22,18 @@ public class Bishop extends Piece{
         int i = x - 1;
         int j = y + 1;
 
-        while(i >= 0 && y < 8){
+        while(i >= 0 && j < 8){
             if (addMove(possibleMoves, chessBoard, x, y, i, j)) break;
             i--;
             j++;
-        }
+        } 
 
         //Move up-left
-        
+
         i = x - 1;
         j = y - 1;
 
-        while(i >= 0 && y >= 0){
+        while(i >= 0 && j >= 0){
             if (addMove(possibleMoves, chessBoard, x, y, i, j)) break;
             i--;
             j--;
@@ -44,7 +44,7 @@ public class Bishop extends Piece{
         i = x + 1;
         j = y + 1;
 
-        while(i < 8 && y < 8){
+        while(i < 8 && j < 8){
             if (addMove(possibleMoves, chessBoard, x, y, i, j)) break;
             i++;
             j++;
@@ -55,7 +55,7 @@ public class Bishop extends Piece{
         i = x + 1;
         j = y - 1;
 
-        while(i < 8 && y >= 0){
+        while(i < 8 && j >= 0){
             if (addMove(possibleMoves, chessBoard, x, y, i, j)) break;
             i++;
             j--;

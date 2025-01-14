@@ -49,8 +49,8 @@ public class King extends Piece{
     private void addCastlingMoves(ArrayList<Move> possibleMoves, Board board, int x, int y) {
         if (this.hasMoved) return;
 
-        Piece[][] chessBoard = board.chessBoard;
-        if(color == board.BLACK){
+        //Piece[][] chessBoard = board.chessBoard;
+        if(color == Board.BLACK){
             // Check for black kingside castling
             if (isCastlingPossible(board, x, y, 0, 7, 5, 6)) {
                 possibleMoves.add(new Move(x, y, x, y + 2, false, true));
@@ -62,7 +62,7 @@ public class King extends Piece{
             }
         }
 
-        if(color == board.WHITE){
+        if(color == Board.WHITE){
             // Check for black kingside castling
             if (isCastlingPossible(board, x, y, 7, 7, 5, 6)) {
                 possibleMoves.add(new Move(x, y, x, y + 2, false, true));

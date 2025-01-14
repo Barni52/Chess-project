@@ -24,6 +24,10 @@ public class Board {
 
     private boolean colorToMove = WHITE; // Which color is next to move (at the start white)
 
+    public boolean getColorToMove() {
+        return colorToMove;
+    }
+
     public Board(Piece[][] chessBoard) {
         this.chessBoard = chessBoard;
     }
@@ -64,12 +68,24 @@ public class Board {
         }
 
         // TEST
-
+        positionTester();
         // TEST
     }
 
+    public void positionTester(){
+        for(int i = 0; i < chessBoard.length; i++){
+            for(int y = 0; y < chessBoard[i].length; y++){
+                chessBoard[i][y] = noPiece.getNoPieceInstance();
+            }
+        }
+        chessBoard[4][4] = new King(WHITE);
+        chessBoard[7][4] = new King(BLACK);
+        //chessBoard[6][0] = new Queen(WHITE);
+
+    }
+
     public double getBoardValueOfPieces(boolean inputColor){
-        double value = 0;
+        double value = -1000;
         for(int i = 0; i < chessBoard.length; i++){
             for(int y = 0; y < chessBoard[i].length; y++){
                 if(!(chessBoard[i][y] instanceof noPiece) && chessBoard[i][y].getColor() == inputColor){
@@ -81,7 +97,7 @@ public class Board {
     }
 
     public double getSimpleRelativeValue(){
-        return getBoardValueOfPieces(WHITE) - getBoardValueOfPieces(WHITE);
+        return getBoardValueOfPieces(WHITE) - getBoardValueOfPieces(BLACK);
     }
 
     public void printBoard(){
@@ -119,6 +135,7 @@ public class Board {
     public void executeMove(Move move){
         chessBoard[move.getToX()][move.getToY()] = chessBoard[move.getFromX()][move.getFromY()]; // Moves the piece from the starting square to the arrival square, replacing (capturing) the piece there.
         chessBoard[move.getFromX()][move.getFromY()] = noPiece.getNoPieceInstance();
+        this.colorToMove = !this.colorToMove;
     }
 
     public void play(){
@@ -157,9 +174,32 @@ public class Board {
 
             this.executeMove(userMove);
 
-            colorToMove = !colorToMove;
-
         }
         scanner.close();
+    }
+
+    public boolean isTheSameBoard(Board otherBoard){
+        for(int i = 0; i < this.chessBoard.length; i++){
+            for(int k = 0; k < this.chessBoard[i].length; k++){
+                if(this.chessBoard[i][k] != otherBoard.chessBoard[i][k]){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public Board(Board other){
+        this.colorToMove = other.colorToMove;
+        this.chessBoard = new Piece[8][8];
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                this.chessBoard[i][j] = other.chessBoard[i][j];
+            }
+        }
+    }
+
+    public Board clone(){
+        return new Board(this);
     }
 }

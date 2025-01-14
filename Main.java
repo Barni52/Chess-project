@@ -1,3 +1,4 @@
+import ChessAI.PositionEvaluater;
 import board.Board;
 import board.BoardTest;
 import move.Move;
@@ -9,6 +10,10 @@ public class Main {
         //mainBoard.play();
 
         mainBoard.printBoard();
-        System.out.println(mainBoard.getSimpleRelativeValue());
+        mainBoard.getPossibleMoves(true);
+
+        int maxDepth = 4;
+
+        //System.out.println(PositionEvaluater.searchBestMove(mainBoard, maxDepth));
     }
 }

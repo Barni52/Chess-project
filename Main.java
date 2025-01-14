@@ -6,8 +6,9 @@ public class Main {
     public static void main(String[] args) {
         Board mainBoard = new Board();
 
-        mainBoard.play();
+        //mainBoard.play();
 
         mainBoard.printBoard();
+        System.out.println(mainBoard.getSimpleRelativeValue());
     }
 }

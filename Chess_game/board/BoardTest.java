@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import move.Move;
 import pieces.noPiece;
-import pieces.Pawn;
 import pieces.King;
 
 public class BoardTest {

@@ -14,6 +14,10 @@ public class Rook extends Piece{
         return "[R" + (color ? "W" : "B") + "]";
     }
 
+    public int getValue(){
+        return 5;
+    }
+
     public ArrayList<Move> move(Board board, int x, int y) {
         ArrayList<Move> possibleMoves = new ArrayList<>();
         Piece[][] chessBoard = board.chessBoard;

@@ -15,6 +15,10 @@ public class King extends Piece{
         return "[K" + (color ? "W" : "B") + "]";
     }
 
+    public int getValue(){
+        return 0;
+    }
+
 
     public  ArrayList<Move> move(Board board, int x, int y){
         ArrayList<Move> possibleMoves = new ArrayList<>();

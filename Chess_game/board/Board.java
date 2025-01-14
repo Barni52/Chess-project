@@ -24,10 +24,6 @@ public class Board {
 
     private boolean colorToMove = WHITE; // Which color is next to move (at the start white)
 
-    private int blackValue = 39;
-    private int whiteValue = 39;
-    
-
     public Board(Piece[][] chessBoard) {
         this.chessBoard = chessBoard;
     }
@@ -70,6 +66,22 @@ public class Board {
         // TEST
 
         // TEST
+    }
+
+    public double getBoardValueOfPieces(boolean inputColor){
+        double value = 0;
+        for(int i = 0; i < chessBoard.length; i++){
+            for(int y = 0; y < chessBoard[i].length; y++){
+                if(!(chessBoard[i][y] instanceof noPiece) && chessBoard[i][y].getColor() == inputColor){
+                    value += chessBoard[i][y].getValue();
+                }
+            }
+        }
+        return value;
+    }
+
+    public double getSimpleRelativeValue(){
+        return getBoardValueOfPieces(WHITE) - getBoardValueOfPieces(WHITE);
     }
 
     public void printBoard(){

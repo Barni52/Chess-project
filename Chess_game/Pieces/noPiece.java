@@ -30,4 +30,8 @@ public class noPiece extends Piece{
  
         return singleNoPiece;
     }
+
+    public int getValue(){
+        return 0;
+    }
 }

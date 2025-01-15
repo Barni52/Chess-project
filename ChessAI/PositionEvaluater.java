@@ -7,6 +7,7 @@ import board.Board;
 import move.Move;
 
 public class PositionEvaluater {
+    public static int leavesChecked = 0;
 
     public static HashMap<Move, Double> getBestMove(Board board, int maxDepth){
         HashMap<Move, Double> moveValues = searchMoves(board, maxDepth);
@@ -79,15 +80,15 @@ public class PositionEvaluater {
         for(Move moveKey : moveValues.keySet()){
             Board boardCopy = board.clone();
             boardCopy.executeMove(moveKey);
-            boolean currentColorToMove = boardCopy.getColorToMove();
-            moveValues.put(moveKey, search(boardCopy, 1, maxDepth, currentColorToMove));
+            moveValues.put(moveKey, search(boardCopy, 1, maxDepth, Integer.MIN_VALUE, Integer.MAX_VALUE));
         }
 
 
         return moveValues;
     }
 
-    private static double search(Board board, int currentDepth, int maxDepth, boolean currentColorToMove){
+    private static double search(Board board, int currentDepth, int maxDepth, double alpha, double beta){
+        leavesChecked++;
         if(!board.isThereKingOnBoard(Board.WHITE)){
             return -1000 + currentDepth;
         } else if (!board.isThereKingOnBoard(Board.BLACK)){
@@ -98,14 +99,18 @@ public class PositionEvaluater {
             return board.getSimpleRelativeValue();
         }
         
-        if(currentColorToMove){
+        if(board.getColorToMove()){
             double max = -2000;
             ArrayList<Move> tempList = board.getPossibleMoves(board.getColorToMove());
             for(Move m : tempList){
                 Board tempBoard = board.clone();
                 tempBoard.executeMove(m);
-                double thisMoveValue = search(tempBoard, currentDepth + 1, maxDepth, tempBoard.getColorToMove());
+
+                double thisMoveValue = search(tempBoard, currentDepth + 1, maxDepth, alpha, beta);
                 if(thisMoveValue > max) max = thisMoveValue;
+
+                alpha = Math.max(alpha, max);
+                if(beta <= alpha) break;
             }
             return max;
         } else{
@@ -114,8 +119,12 @@ public class PositionEvaluater {
             for(Move m : tempList){
                 Board tempBoard = board.clone();
                 tempBoard.executeMove(m);
-                double thisMoveValue = search(tempBoard, currentDepth + 1, maxDepth, tempBoard.getColorToMove());
+
+                double thisMoveValue = search(tempBoard, currentDepth + 1, maxDepth, alpha, beta);
                 if(thisMoveValue <= min) min = thisMoveValue;
+
+                beta = Math.max(alpha, min);
+                if(beta <= alpha) break;
             }
 
             return min;

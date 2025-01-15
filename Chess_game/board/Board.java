@@ -69,7 +69,7 @@ public class Board {
         }
 
         // TEST
-        positionTester();
+        //positionTester();
         // TEST
     }
 

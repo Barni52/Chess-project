@@ -1,0 +1,2 @@
+Before alpha-beta pruning: depth 6 ~ 2.5s leaves checked = 2.5 mil, depth 7 ~ 65s leaves checked 55 mil
+After alpha-beta pruning: depth 6 ~ 0.3s leaves checked = 190k, depth 7 ~ 3s :O leaves checked 3 mil, depth 8 ~ 10s leaves checked 7mil

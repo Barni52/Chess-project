@@ -13,17 +13,27 @@ public class Main {
 
         mainBoard.printBoard();
         //System.out.println(mainBoard.getSimpleRelativeValue());
-        int maxDepth = 5;
+        int maxDepth = 7;
+
+        long startTime = System.currentTimeMillis();
+
         HashMap<Move, Double> bestMoves = PositionEvaluater.searchMoves(mainBoard, maxDepth);
+
+        long finishTime = System.currentTimeMillis();
+        System.out.println("That took: " + ((double)(finishTime - startTime)  / 1000) + " s");
+
         System.out.println(bestMoves);
         PositionEvaluater.printBestMove(PositionEvaluater.getBestMove(bestMoves, mainBoard.getColorToMove()));
+
+        System.out.println("Checked " + String.format("%,d", PositionEvaluater.leavesChecked) + " nodes!");
         
+
     }
 
     /*
      * TODO
      * 
-     * Currently the algo doesnt consider the length of the checkmate: m3 == m8! Need fix 
+     * Currently the algo doesnt consider the length of the checkmate: m3 == m8! Need fix // FIXED (Kinda depth not obvious, but higher values = shorter mate)
      * Very slow (alpa-beta pruning?)
      * Eval is really shit, needs lots of update!
      * Promotions (half done)

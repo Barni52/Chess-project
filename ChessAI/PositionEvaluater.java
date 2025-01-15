@@ -30,6 +30,27 @@ public class PositionEvaluater {
         return bestMoveAndValue;
     }
 
+    public static HashMap<Move, Double> getBestMove(HashMap<Move, Double> moveValues, boolean colorToMove){
+        HashMap<Move, Double> bestMoveAndValue = new HashMap<>();
+        double bestCase = colorToMove ? -2002 : 2002;
+        Move bestMove = new Move(0, 0, 0, 0, false); // This is a place holder to make the jdk happy, if this case ever happens it's cooked. (It's printed as a8 to a8)
+        for(Move keyMove : moveValues.keySet()){
+            if(colorToMove == Board.WHITE){
+                if(moveValues.get(keyMove) > bestCase){
+                    bestCase = moveValues.get(keyMove);
+                    bestMove = keyMove;
+                }
+            } else{
+                if(moveValues.get(keyMove) < bestCase){
+                    bestCase = moveValues.get(keyMove);
+                    bestMove = keyMove;
+                }
+            }
+        }
+        bestMoveAndValue.put(bestMove, bestCase);
+        return bestMoveAndValue;
+    }
+
     public static void printBestMove(Board board, int maxDepth){
         HashMap<Move, Double> bestMoveToBePrinted = getBestMove(board, maxDepth);
 
@@ -49,8 +70,7 @@ public class PositionEvaluater {
     public static HashMap<Move, Double> searchMoves(Board board, int maxDepth){
         HashMap<Move, Double> moveValues = new HashMap<>();
         ArrayList<Move> tempList = board.getPossibleMoves(board.getColorToMove());
-        boolean currentColorToMove = board.getColorToMove();
-
+        
         for(Move m : tempList){
             moveValues.put(m, 0.0);
         }
@@ -59,7 +79,8 @@ public class PositionEvaluater {
         for(Move moveKey : moveValues.keySet()){
             Board boardCopy = board.clone();
             boardCopy.executeMove(moveKey);
-            moveValues.put(moveKey, search(boardCopy, 0, maxDepth, currentColorToMove));
+            boolean currentColorToMove = boardCopy.getColorToMove();
+            moveValues.put(moveKey, search(boardCopy, 1, maxDepth, currentColorToMove));
         }
 
 
@@ -67,14 +88,18 @@ public class PositionEvaluater {
     }
 
     private static double search(Board board, int currentDepth, int maxDepth, boolean currentColorToMove){
+        if(!board.isThereKingOnBoard(Board.WHITE)){
+            return -1000 + currentDepth;
+        } else if (!board.isThereKingOnBoard(Board.BLACK)){
+            return 1000 - currentDepth;
+        }
         
-        if(currentDepth == maxDepth || !board.isThereKingOnBoard(Board.WHITE) || !board.isThereKingOnBoard(Board.BLACK)){
+        if(currentDepth == maxDepth){
             return board.getSimpleRelativeValue();
         }
-
+        
         if(currentColorToMove){
             double max = -2000;
-
             ArrayList<Move> tempList = board.getPossibleMoves(board.getColorToMove());
             for(Move m : tempList){
                 Board tempBoard = board.clone();
@@ -85,7 +110,6 @@ public class PositionEvaluater {
             return max;
         } else{
             double min = 2000;
-
             ArrayList<Move> tempList = board.getPossibleMoves(board.getColorToMove());
             for(Move m : tempList){
                 Board tempBoard = board.clone();
@@ -93,6 +117,7 @@ public class PositionEvaluater {
                 double thisMoveValue = search(tempBoard, currentDepth + 1, maxDepth, tempBoard.getColorToMove());
                 if(thisMoveValue <= min) min = thisMoveValue;
             }
+
             return min;
         }
     } 

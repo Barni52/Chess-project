@@ -22,10 +22,10 @@ public class Board {
 
     public Piece[][] chessBoard;
 
-    private boolean colorToMove = WHITE; // Which color is next to move (at the start white)
+    private boolean colorToMove; // Which color is next to move (at the start white)
 
     public boolean getColorToMove() {
-        return colorToMove;
+        return this.colorToMove;
     }
 
     public Board(Piece[][] chessBoard) {
@@ -33,6 +33,7 @@ public class Board {
     }
     
     public Board() {
+        colorToMove = WHITE;
         chessBoard = new Piece[8][8];
 
         chessBoard[0][0] = new Rook(BLACK);
@@ -78,10 +79,15 @@ public class Board {
                 chessBoard[i][y] = noPiece.getNoPieceInstance();
             }
         }
-        chessBoard[5][4] = new King(WHITE);
-        chessBoard[7][4] = new King(BLACK);
+        colorToMove = WHITE;
+        /*
+        chessBoard[2][6] = new King(WHITE);
+        chessBoard[0][7] = new King(BLACK);
+        chessBoard[1][0] = new Pawn(WHITE);
+         */
+        chessBoard[5][6] = new King(WHITE);
+        chessBoard[7][7] = new King(BLACK);
         chessBoard[6][0] = new Queen(WHITE);
-
     }
 
     public double getBoardValueOfPieces(boolean inputColor){
@@ -135,7 +141,15 @@ public class Board {
     public void executeMove(Move move){
         chessBoard[move.getToX()][move.getToY()] = chessBoard[move.getFromX()][move.getFromY()]; // Moves the piece from the starting square to the arrival square, replacing (capturing) the piece there.
         chessBoard[move.getFromX()][move.getFromY()] = noPiece.getNoPieceInstance();
-        this.colorToMove = !this.colorToMove;
+
+        //Handles promotion currently only to queen
+        if(move.getToX() == 0 && chessBoard[move.getToX()][move.getToY()] instanceof Pawn){ 
+            chessBoard[move.getToX()][move.getToY()] = new Queen(WHITE);
+        } else if(move.getToX() == 8 && chessBoard[move.getToX()][move.getToY()] instanceof Pawn){
+            chessBoard[move.getToX()][move.getToY()] = new Queen(BLACK);
+        }
+
+        colorToMove = !colorToMove;
     }
 
     public void play(){

@@ -20,6 +20,7 @@ public class numberToChar {
             case 7:
                 return "h";        
             default:
+                System.out.println("Got the wrong index of: " + i);
                 return "E";
         }
     }

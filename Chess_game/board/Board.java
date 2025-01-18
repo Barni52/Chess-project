@@ -1,8 +1,11 @@
 package board;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
+import ChessAI.PositionEvaluator;
+import ChessAI.PositionSearcher;
 import move.Move;
 import pieces.Bishop;
 import pieces.King;
@@ -90,22 +93,6 @@ public class Board {
         chessBoard[6][0] = new Queen(WHITE);
     }
 
-    public double getBoardValueOfPieces(boolean inputColor){
-        double value = -1000;
-        for(int i = 0; i < chessBoard.length; i++){
-            for(int y = 0; y < chessBoard[i].length; y++){
-                if(!(chessBoard[i][y] instanceof noPiece) && chessBoard[i][y].getColor() == inputColor){
-                    value += chessBoard[i][y].getValue();
-                }
-            }
-        }
-        return value;
-    }
-
-    public double getSimpleRelativeValue(){
-        return getBoardValueOfPieces(WHITE) - getBoardValueOfPieces(BLACK);
-    }
-
     public void printBoard(){
         for(int i = 0; i < chessBoard.length; i++){
             for(int k = 0; k < chessBoard[i].length; k++){
@@ -158,6 +145,19 @@ public class Board {
         System.out.println("Type the move to make it, or type 'forfeit' to give up.");
         while(true){
             this.printBoard();
+            if(colorToMove == WHITE){
+                int maxDepth = 6;
+
+                long startTime = System.currentTimeMillis();
+
+                HashMap<Move, Double> bestMoves = PositionSearcher.searchMoves(this, maxDepth);
+
+                long finishTime = System.currentTimeMillis();
+                System.out.println("That took: " + ((double)(finishTime - startTime)  / 1000) + " s");
+
+                System.out.println(bestMoves);
+                PositionSearcher.printBestMove(PositionSearcher.getBestMove(bestMoves, getColorToMove()));
+            }
             System.out.println(this.getPossibleMoves(colorToMove));
 
             if(!isThereKingOnBoard(colorToMove)){

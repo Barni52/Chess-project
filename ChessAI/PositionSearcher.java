@@ -6,7 +6,7 @@ import java.util.HashMap;
 import board.Board;
 import move.Move;
 
-public class PositionEvaluater {
+public class PositionSearcher {
     public static int leavesChecked = 0;
 
     public static HashMap<Move, Double> getBestMove(Board board, int maxDepth){
@@ -96,9 +96,9 @@ public class PositionEvaluater {
         }
         
         if(currentDepth == maxDepth){
-            return board.getSimpleRelativeValue();
+            return PositionEvaluator.getSimpleRelativeValue(board);
         }
-        
+         
         if(board.getColorToMove()){
             double max = -2000;
             ArrayList<Move> tempList = board.getPossibleMoves(board.getColorToMove());

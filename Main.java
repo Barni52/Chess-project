@@ -1,6 +1,6 @@
 import java.util.HashMap;
 
-import ChessAI.PositionEvaluater;
+import ChessAI.PositionSearcher;
 import board.Board;
 import board.BoardTest;
 import move.Move;
@@ -12,20 +12,22 @@ public class Main {
         //mainBoard.play();
 
         mainBoard.printBoard();
+
+        mainBoard.play();
         //System.out.println(mainBoard.getSimpleRelativeValue());
-        int maxDepth = 7;
+        int maxDepth = 6;
 
         long startTime = System.currentTimeMillis();
 
-        HashMap<Move, Double> bestMoves = PositionEvaluater.searchMoves(mainBoard, maxDepth);
+        HashMap<Move, Double> bestMoves = PositionSearcher.searchMoves(mainBoard, maxDepth);
 
         long finishTime = System.currentTimeMillis();
         System.out.println("That took: " + ((double)(finishTime - startTime)  / 1000) + " s");
 
         System.out.println(bestMoves);
-        PositionEvaluater.printBestMove(PositionEvaluater.getBestMove(bestMoves, mainBoard.getColorToMove()));
+        PositionSearcher.printBestMove(PositionSearcher.getBestMove(bestMoves, mainBoard.getColorToMove()));
 
-        System.out.println("Checked " + String.format("%,d", PositionEvaluater.leavesChecked) + " nodes!");
+        System.out.println("Checked " + String.format("%,d", PositionSearcher.leavesChecked) + " nodes!");
         
 
     }
@@ -33,8 +35,8 @@ public class Main {
     /*
      * TODO
      * 
-     * Currently the algo doesnt consider the length of the checkmate: m3 == m8! Need fix // FIXED (Kinda depth not obvious, but higher values = shorter mate)
-     * Very slow (alpa-beta pruning?)
+     * Currently the algo doesnt consider the length of the checkmate: m3 == m8! Need fix // FIXED (Kinda, depth not obvious, but higher values = shorter mate)
+     * Very slow (alpa-beta pruning?) // Implemented
      * Eval is really shit, needs lots of update!
      * Promotions (half done)
      * 
